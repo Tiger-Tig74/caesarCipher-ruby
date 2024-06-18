@@ -1,20 +1,18 @@
-ABCD = "abcdefghijklmnopqrstuvwxyz".split("")
+ABCD = ('a'..'z').to_a
 
-def find_in_ABCD(string)
-  ABCD.each_with_index { |val, index| if val == string.downcase then return index end }
+def find_in_abcd(char)
+  ABCD.index(char.downcase)
 end
 
 def caesar_cipher(string, number)
-  text = string.strip.split("")
-
-  final_text = text.map do |n|
-    if ABCD.include?(n.downcase)
-      num_index = find_in_ABCD(n)
-      val_index = num_index + number > ABCD.length ? ABCD[(num_index + number) - ABCD.length] : ABCD[num_index + number]
-      n == n.upcase ? val_index.upcase : val_index
+  shifted_text = string.chars.map do |char|
+    if ABCD.include?(char.downcase)
+      original_index = find_in_abcd(char)
+      new_index = (original_index + number) % ABCD.length
+      char == char.upcase ? ABCD[new_index].upcase : ABCD[new_index]
     else
-      n
+      char
     end
   end
-  return final_text.join("")
+  shifted_text.join
 end
